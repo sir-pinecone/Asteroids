@@ -1,3 +1,6 @@
+from math import sqrt
+
+
 class Vector3(list):
     """ 
     A simple vector.
@@ -6,68 +9,67 @@ class Vector3(list):
         """ 
         Construct the vector from the given values.
         """
-        for value in values:
-            assert(type(value) == float)
-            self.append(value)
+        if not values:
+            self.append(0.0)
+            self.append(0.0)
+            self.append(0.0)
+        else:
+            for value in values:
+                assert(type(value) == float)
+                self.append(value)
 
     def __add__(self, other):
         """ 
         Add one vector to another: result = self + other
         """
-        ret = Vector3()
-        if type(other) == float:
-            for i in self:
-                ret.append(i + other)
-        else:
-            assert(len(other) == len(self))
-            for idx, val in enumerate(self):
-                ret.append(val + other[idx])
-        return ret
+        assert(len(other) == len(self))
+        return Vector3(self[0] + other[0], self[1] + other[1], 
+                       self[2] + other[2]) 
 
     def __iadd__(self, other):
         """ 
         Add one vector to another: self += other
         """
-        return self.__add__(other)
+        assert(len(other) == len(self))
+        self[0] += other[0]
+        self[1] += other[1]
+        self[2] += other[2]
+        return self
 
     def __sub__(self, other):
         """ 
         Subtract one vector from another: result = self - other
         """
-        ret = Vector3()
-        if type(other) == float:
-            for i in self:
-                ret.append(i - other)
-        else:
-            assert(len(other) == len(self))
-            for idx, val in enumerate(self):
-                ret.append(val - other[idx])
-        return ret
+        assert(len(other) == len(self))
+        return Vector3(self[0] - other[0], self[1] - other[1], 
+                       self[2] - other[2]) 
 
     def __isub__(self, other):
         """ 
         Subtract one vector from another: self -= other
         """
-        return self.__sub__(other)
+        assert(len(other) == len(self))
+        self[0] -= other[0]
+        self[1] -= other[1]
+        self[2] -= other[2]
+        return self
 
     def __mul__(self, other):
         """
         Scalar multiplication: result = self * val
         """
-        ret = Vector3()
-        if type(other) == float:
-            for i in self:
-                ret.append(i * other)
-        else:
-            for idx, val in enumerate(self):
-                ret.append(val * other[idx])
-        return ret
+        return Vector3(self[0] * float(other), 
+                       self[1] * float(other), 
+                       self[2] * float(other)) 
 
     def __imul__(self, other):
         """
-        self *= other
+        self *= scalar
         """
-        return self.__mul__(other)
+        self[0] *= float(other)
+        self[1] *= float(other)
+        self[2] *= float(other)
+        return self
 
     def __rmul__(self, other):
         """
@@ -81,13 +83,70 @@ class Vector3(list):
         """
         return self.__mul__(other)
 
+    def __div__(self, other):
+        """
+        Scalar division: result = self / other
+        """
+        return Vector3(self[0] / float(other), 
+                       self[1] / float(other), 
+                       self[2] / float(other))
+
+    def __idiv__(self, other):
+        """
+        Scalar division: self /= other
+        """
+        self[0] /= float(other)
+        self[1] /= float(other)
+        self[2] /= float(other)
+        return self 
+
+    def __neg__(self):
+        """
+        Returns a negated vector           
+        """
+        return Vector3(-self[0], -self[1], -self[2])
+
+    def length(self):
+        return sqrt(self[0] * self[0] + self[1] * self[1] + 
+                         self[2] * self[2])
+
+    def normalize(self):
+        """
+        Normalize the vector (retain dir, set length to 1)
+        """
+        length = self.length()
+        if length == 0:
+            return
+        self[0] /= length
+        self[1] /= length
+        self[2] /= length
+
+    def unit(self):
+        """
+        Returns a normalized copy of this vector
+        """
+        length = self.length()
+        if length == 0:
+            return self.copy()
+        return Vector3(self[0] / length, 
+                       self[1] / length, 
+                       self[2] / length)
+    
     def copy(self):
         """
         Returns a copy of this vector.
         """
         return Vector3(*self)
 
-    def isShorterThan(self, magnitude):
+    def zero(self):
+        """
+        Sets the vector components to 0.
+        """
+        self[0] = 0.0
+        self[1] = 0.0
+        self[2] = 0.0
+
+    def is_shorter_than(self, magnitude):
         """
         Returns true if the magnitude of the vector is shorter 
         than the listed magnitude.
