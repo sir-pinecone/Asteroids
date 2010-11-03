@@ -13,6 +13,7 @@ from camera import Camera
 from vector3 import Vector3
 from scene import GameplayScene
 import config
+import log
 
 # Create a camera 
 camera = Camera(Vector3(0.0, -10.0, -90.0)) 
@@ -25,6 +26,7 @@ elapsedTime = 0.0
 scene = GameplayScene()
 
 def init():
+    log.info("Initializing OpenGL")
     # Setup OpenGL
     glClearColor(0.0, 0.0, 0.0, 0.0) # black
     glPointSize(2)
@@ -76,6 +78,7 @@ def keyboard(key, x, y):
     camera.update(key)
 
 def main():
+    log.info("Initializing GLUT")
     # Initialize GLUT first
     glutInit()
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_ALPHA)

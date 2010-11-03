@@ -11,8 +11,6 @@ class ObjectManager(object):
         self.gObjects = []
 
     def add(self, obj):
-        log.info("Adding %s to ObjectManager" % obj)
-
         '''Add an game object to the list'''
         # Make sure we're adding an instance of game objects
         # or a list of them

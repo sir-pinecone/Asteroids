@@ -67,3 +67,7 @@ class Particle(GameObject):
             self.vel *= Particle.REBOUND_FACTOR # slow it down
             self.vel[1] *= -1 # "bounce" by flipping vertical vel
 
+class Meteor(GameObject):
+    pass
+
+    
