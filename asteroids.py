@@ -11,21 +11,30 @@ from time import time
 
 from camera import Camera
 from vector3 import Vector3
+from scene import GameplayScene
 import config
 
 # Create a camera 
-camera = Camera(Vector3(0.0,0.0,-30.0)) 
+camera = Camera(Vector3(0.0, -10.0, -90.0)) 
 
 # Track the running time
 oldTime = time()
 elapsedTime = 0.0
 
-def initialize():
+# Create the game scene
+scene = GameplayScene()
+
+def init():
+    # Setup OpenGL
     glClearColor(0.0, 0.0, 0.0, 0.0) # black
+    glPointSize(2)
     glClearDepth(1.0)
     glDepthFunc(GL_LESS)
     glEnable(GL_DEPTH_TEST)
     glShadeModel(GL_SMOOTH)
+
+    # Setup the game
+    scene.init() 
 
 def resize(width, height):
     camera.resize(width, height)
@@ -49,21 +58,21 @@ def draw():
 
     for i in xrange(numIterations):
         # update the simulation here
-        pass
+        scene.update(delta)
 
     camera.setup()
 
-    # Draw a triangle for the hell of it
-    glBegin(GL_TRIANGLES)
-    glVertex3f(0.0, 1.0, 0.0)
-    glVertex3f(-1.0, -1.0, 0.0)
-    glVertex3f(1.0, -1.0, 0.0)
-    glEnd()
+    # Draw the objects
+    scene.draw()
     
     # Draw the frame
     glutSwapBuffers()
 
 def keyboard(key, x, y):
+    # Reset if the space key is pressed
+    if key == ' ':
+        scene.reset()
+
     camera.update(key)
 
 def main():
@@ -81,7 +90,7 @@ def main():
     glutKeyboardFunc(keyboard)
 
     # Run our own initialization
-    initialize()
+    init()
 
     # Start the event loop
     glutMainLoop()

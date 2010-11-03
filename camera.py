@@ -15,14 +15,27 @@ class Camera(object):
         self.__position = origin
 
     def update(self, key):
-        if key == 'w':
-            self.__xRotation -= 1.0
-        elif key == 's':
-            self.__xRotation += 1.0
-        elif key == 'a':
-            self.__yRotation -= 1.0
+        if key == 'a':
+            self.__position[0] += 2.0 # move left
         elif key == 'd':
-            self.__yRotation += 1.0
+            self.__position[0] -= 2.0 # move right
+        elif key == 'w':
+            self.__position[1] -= 2.0 # move up
+        elif key == 's':
+            self.__position[1] += 2.0 # move down
+        elif key == 'q':
+            self.__position[2] += 2.0  
+        elif key == 'e':
+            self.__position[2] -= 2.0
+        elif key == 'j':
+            self.__yRotation += 2.0
+        elif key == 'l':
+            self.__yRotation -= 2.0
+        elif key == 'i':
+            self.__xRotation += 2.0
+        elif key == 'k':
+            self.__xRotation -= 2.0
+        # add rotation
 
     def resize(self, width, height):
         if height == 0:

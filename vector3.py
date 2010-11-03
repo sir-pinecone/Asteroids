@@ -13,6 +13,15 @@ class Vector3(list):
             self.append(0.0)
             self.append(0.0)
             self.append(0.0)
+        elif len(values) == 1 and \
+             type(values[0]) == tuple or \
+             type(values[0]) == list:
+            vals = values[0]
+            #print 'len: %s' % len(vals)
+            #assert(len(vals) < 3)
+            self.append(vals[0])
+            self.append(vals[1])
+            self.append(vals[2])
         else:
             for value in values:
                 assert(type(value) == float)
